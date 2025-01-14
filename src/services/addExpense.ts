@@ -1,13 +1,23 @@
 import { Expense } from '../models/expense.ts'
-import { loadExpencesFromCSV } from '../utils/index.ts'
-import { saveExpencesToCSV } from '../utils/index.ts'
+import { loadExpencesFromCSV, saveExpencesToCSV } from '../utils/index.ts'
 
-let expenses: Expense[]
+const expenses = await loadExpencesFromCSV()
 const getMaxId = () => {
   return expenses.reduce((maxId, expense) => Math.max(maxId, parseInt(expense.id)), 0)
 }
 
+const expenseExists = (description: string, amount: string) => {
+  return expenses.some(
+    (expense) => expense.description === description && expense.amount === parseFloat(amount)
+  )
+}
+
 export async function addExpense(description: string, amount: string) {
+  if (expenseExists(description, amount)) {
+    console.log(`Expense already exists!`)
+    return
+  }
+
   const newId = getMaxId() + 1
   const expense: Expense = {
     id: String(newId),
@@ -16,6 +26,6 @@ export async function addExpense(description: string, amount: string) {
     date: new Date().toISOString()
   }
   expenses.push(expense)
-  await saveExpencesToCSV()
+  await saveExpencesToCSV(expenses)
   console.log(`Expense added successfully!`)
 }

@@ -1,10 +1,9 @@
 import { addExpense } from './services/addExpense.ts'
 import { Command } from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts'
-import { loadExpencesFromCSV } from './utils/index.ts'
+import { listExpenses } from './services/listExpense.ts'
 
 const program = new Command()
 
-const expenses = await loadExpencesFromCSV()
 // add expensees command
 program
   .command('add')
@@ -14,9 +13,9 @@ program
   .action((options) => {
     const { description, amount } = options
     if (description && amount) {
-      addExpense(description, amount);
+      addExpense(description, amount)
     } else {
-      console.error("Both description and amount must be provided.");
+      console.error('Both description and amount must be provided.')
     }
   })
 
@@ -25,11 +24,7 @@ program
   .command('list')
   .description('List all expenses')
   .action(() => {
-    expenses.forEach((expense) => {
-      console.log(
-        `ID: ${expense.id}, Description: ${expense.description}, Amount: ${expense.amount}, Date: ${expense.date}`
-      )
-    })
+    listExpenses()
   })
 
 await program.parse(Deno.args)
