@@ -1,3 +1,4 @@
+import { green, yellow } from 'https://deno.land/std@0.224.0/fmt/colors.ts'
 import { Expense } from '../models/expense.ts'
 import { loadExpencesFromCSV, saveExpencesToCSV } from '../utils/index.ts'
 
@@ -14,7 +15,7 @@ const expenseExists = (description: string, amount: string) => {
 
 export async function addExpense(description: string, amount: string) {
   if (expenseExists(description, amount)) {
-    console.log(`Expense already exists!`)
+    console.log(yellow(`Expense already exists!`))
     return
   }
 
@@ -27,5 +28,5 @@ export async function addExpense(description: string, amount: string) {
   }
   expenses.push(expense)
   await saveExpencesToCSV(expenses)
-  console.log(`Expense added successfully!`)
+  console.log(green(`Expense added successfully! (ID: ${newId})`))
 }

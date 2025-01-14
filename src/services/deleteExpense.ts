@@ -1,5 +1,5 @@
+import { red } from 'https://deno.land/std@0.224.0/fmt/colors.ts'
 import { loadExpencesFromCSV, saveExpencesToCSV } from '../utils/index.ts'
-
 export async function deleteExpense(id: string): Promise<{ success: boolean; message: string }> {
   try {
     let expenses = await loadExpencesFromCSV()
@@ -8,7 +8,7 @@ export async function deleteExpense(id: string): Promise<{ success: boolean; mes
     if (!expense) {
       return {
         success: false,
-        message: 'Expense not found!'
+        message: red('Expense not found!')
       }
     }
 
@@ -17,12 +17,12 @@ export async function deleteExpense(id: string): Promise<{ success: boolean; mes
 
     return {
       success: true,
-      message: 'Expense deleted successfully!'
+      message: red('Expense deleted successfully!')
     }
   } catch (error) {
     return {
       success: false,
-      message: `Failed to delete expense: ${(error as Error).message}`
+      message: red(`Failed to delete expense: ${(error as Error).message}`)
     }
   }
 }
