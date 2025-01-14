@@ -1,6 +1,7 @@
 import { addExpense } from './services/addExpense.ts'
 import { Command } from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts'
 import { listExpenses } from './services/listExpense.ts'
+import { deleteExpense } from './services/deleteExpense.ts'
 
 const program = new Command()
 
@@ -25,6 +26,25 @@ program
   .description('List all expenses')
   .action(() => {
     listExpenses()
+  })
+
+// delete expenses command
+program
+  .command('delete')
+  .description('Delete an expense')
+  .option('--id <id:number>', 'ID of the expense to delete')
+  .action(async (options) => {
+    const { id } = options
+    if (id?.toString()) {
+      try {
+        await deleteExpense(id.toString())
+        console.log('Expense deleted successfully')
+      } catch (error) {
+        console.error((error as Error).message)
+      }
+    } else {
+      console.error('Please provide an expense ID to delete')
+    }
   })
 
 await program.parse(Deno.args)
