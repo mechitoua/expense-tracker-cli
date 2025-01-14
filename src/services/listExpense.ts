@@ -1,4 +1,3 @@
-import { bold } from 'https://deno.land/std@0.224.0/fmt/colors.ts'
 import { Expense } from '../models/expense.ts'
 import { loadExpencesFromCSV } from '../utils/index.ts'
 
