@@ -1,3 +1,4 @@
+import { getSummary } from './services/summaryExpense.ts'
 import { addExpense } from './services/addExpense.ts'
 import { Command } from 'https://deno.land/x/cliffy@v0.25.7/command/mod.ts'
 import { listExpenses } from './services/listExpense.ts'
@@ -45,6 +46,21 @@ program
     } else {
       console.error('Please provide an expense ID to delete')
     }
-  })
+})
+
+// summary expenses command
+program
+.command('summary')
+.description('Show expense summary')
+.option('--month <month:number>', 'Month number (1-12) to filter expenses')
+.action(async (options) => {
+    const { month } = options
+    try {
+    const summary = await getSummary(month)
+    console.log(summary)
+    } catch (error) {
+    console.error((error as Error).message)
+    }
+})
 
 await program.parse(Deno.args)
