@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Get the real path of the script
+SCRIPT_DIR="$( cd "$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )" && pwd )"
+
+# Check if Deno is installed
+if ! command -v deno &> /dev/null; then
+    echo "Error: Deno is not installed. Please install Deno first."
+    exit 1
+fi
+
+# Execute the Deno application with all passed arguments
+# The main application entry point is in src/main.ts
+deno run --allow-read --allow-write --allow-sys "$SCRIPT_DIR/src/main.ts" "$@"
+
+# Forward the exit code from the Deno application
+exit $?
